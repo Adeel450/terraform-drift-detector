@@ -1,0 +1,29 @@
+{
+  "types": ["aws_instance", "aws_s3_bucket", "aws_security_group"],
+  "resources": [
+    {
+      "type": "aws_instance",
+      "id": "i-0web1234567890",
+      "attributes": {
+        "instance_type": "t3.large",
+        "ami": "ami-0abc123"
+      },
+      "tags": {
+        "Name": "web",
+        "env": "staging",
+        "owner": "ops"
+      }
+    },
+    {
+      "type": "aws_s3_bucket",
+      "id": "my-assets-bucket",
+      "attributes": {
+        "bucket": "my-assets-bucket",
+        "acl": "private"
+      },
+      "tags": {
+        "env": "prod"
+      }
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+# Terraform Drift Detector configuration.
+#
+# Where drift reports are persisted (powers the dashboard + history).
+store_dir: ./reports
+# Dashboard listen address (used by `driftdetector serve`).
+addr: ":8080"
+
+# One entry per thing to scan. A target with a `schedule` is scanned
+# automatically on that cron; targets without one are scanned on demand only.
+targets:
+  # Local development target using the mock provider — runs every minute and
+  # requires no cloud credentials.
+  - name: demo-mock
+    provider: mock
+    schedule: "* * * * *"        # every minute (cron: min hour dom mon dow)
+    state:
+      type: local
+      path: ./testdata/sample.tfstate
+    options:
+      fixture: ./testdata/mock_actual.json
+
+  # Example AWS target reading state from S3, scanned hourly. Uncomment and
+  # provide real values + AWS credentials (env, shared config, or instance role).
+  # - name: prod-aws
+  #   provider: aws
+  #   schedule: "0 * * * *"      # top of every hour
+  #   region: us-east-1
+  #   state:
+  #     type: s3
+  #     path: s3://my-tfstate-bucket/prod/terraform.tfstate
+  #     region: us-east-1
+
+  # Example Azure target (on-demand only — no schedule).
+  # - name: prod-azure
+  #   provider: azure
+  #   subscription: 00000000-0000-0000-0000-000000000000
+  #   state:
+  #     type: local
+  #     path: ./azure.tfstate
+
+  # Example GCP target.
+  # - name: prod-gcp
+  #   provider: gcp
+  #   project: my-gcp-project
+  #   state:
+  #     type: local
+  #     path: ./gcp.tfstate
